@@ -2,6 +2,7 @@ package com.github.apiggs;
 
 import com.github.apiggs.handler.AsciidocTreeHandler;
 import com.github.apiggs.handler.HtmlTreeHandler;
+import com.github.apiggs.handler.MarkdownTreeHandler;
 import com.github.apiggs.handler.TreeHandler;
 import com.github.apiggs.handler.postman.PostmanTreeHandler;
 import com.github.apiggs.visitor.NodeVisitor;
@@ -37,7 +38,7 @@ public class Environment {
     /**
      * 默认的文档构建器
      */
-    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new PostmanTreeHandler(), new AsciidocTreeHandler(), new HtmlTreeHandler());
+    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new PostmanTreeHandler(), new AsciidocTreeHandler(),new MarkdownTreeHandler(), new HtmlTreeHandler());
 
 
     private enum Framework {
