@@ -1,7 +1,8 @@
-package com.github.apiggs.example.common;
+package com.apigcc.example.common;
 
 /**
  * 用户角色
+ * @code
  */
 public enum Role {
 

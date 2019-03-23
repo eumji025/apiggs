@@ -1,4 +1,4 @@
-package com.github.apiggs.example.hello;
+package com.apigcc.example.spring.hello;
 
 public class Greeting {
 

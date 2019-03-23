@@ -1,4 +1,4 @@
-package com.github.apiggs.example.common;
+package com.apigcc.example.spring;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 

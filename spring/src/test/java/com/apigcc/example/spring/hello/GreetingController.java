@@ -1,4 +1,4 @@
-package com.github.apiggs.example.hello;
+package com.apigcc.example.spring.hello;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +22,7 @@ public class GreetingController {
      * @return
      */
     @RequestMapping("/greeting")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="apiggs") String name) {
+    public Greeting greeting(@RequestParam(value="name", defaultValue="apigcc") String name) {
         return new Greeting(counter.incrementAndGet(),
                 String.format(template, name));
     }

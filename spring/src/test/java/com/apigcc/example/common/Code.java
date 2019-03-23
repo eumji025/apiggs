@@ -1,7 +1,7 @@
-package com.github.apiggs.example.common;
+package com.apigcc.example.common;
 
 /**
- * @responseCode
+ * @code
  */
 public enum Code{
 
@@ -9,7 +9,13 @@ public enum Code{
     ERROR(-1,"error"),
     NoAuth(1,"no auth");
 
+    /**
+     * 代码
+     */
     private int code;
+    /**
+     * 文字信息
+     */
     private String text;
 
     Code(int code, String text) {

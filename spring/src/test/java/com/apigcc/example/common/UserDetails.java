@@ -1,4 +1,4 @@
-package com.github.apiggs.example.common;
+package com.apigcc.example.common;
 
 /**
  * 某些用户信息框架，如spring security的用户登录信息

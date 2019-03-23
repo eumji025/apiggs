@@ -1,11 +1,11 @@
-package com.github.apiggs.example.advanced;
+package com.apigcc.example.spring.advanced;
 
-import com.github.apiggs.example.common.*;
+import com.apigcc.example.common.*;
+import com.apigcc.example.spring.BaseController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.CheckReturnValue;
 import java.util.List;
 
 /**
@@ -49,7 +49,6 @@ public class UserController extends BaseController {
      *
      * @param user 用户信息
      * @return
-     * @ignore user.id 忽略UserDTO中的id
      */
     @PostMapping
     public ResultData add(@RequestBody UserDTO user) {
@@ -121,7 +120,7 @@ public class UserController extends BaseController {
     /**
      * 查询角色下的用户总数
      * @param role 枚举类型{@link Role}
-     * @return java.lang.String
+     * @return
      */
     @GetMapping("/role")
     public ResultData<Integer> listFromRole(Role role){
@@ -131,7 +130,7 @@ public class UserController extends BaseController {
     /**
      * 批量上传用户信息
      * @param list
-     * @return com.github.apiggs.example.common.UserDTO
+     * @return com.apigcc.example.common.UserDTO
      */
     @PostMapping("/batch")
     public void batch(@RequestBody List<UserDTO> list){

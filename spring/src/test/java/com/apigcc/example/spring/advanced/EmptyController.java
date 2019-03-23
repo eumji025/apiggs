@@ -1,4 +1,4 @@
-package com.github.apiggs.example.advanced;
+package com.apigcc.example.spring.advanced;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
