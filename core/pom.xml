@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <parent>
+        <groupId>com.github.apiggs</groupId>
+        <artifactId>appigs-parent</artifactId>
+        <version>1.2-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>apiggs-core</artifactId>
+    <version>${project.version}</version>
+    <name>apiggs-core</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <file_encoding>UTF-8</file_encoding>
+        <project.build.sourceEncoding>${file_encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${file_encoding}</project.reporting.outputEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <javaparser.version>3.13.4</javaparser.version>
+        <jackson.version>2.9.6</jackson.version>
+        <asciidoctor.version>1.5.6</asciidoctor.version>
+        <markup.version>1.3.3</markup.version>
+        <junit.version>4.12</junit.version>
+        <spring.version>5.1.0.RELEASE</spring.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-symbol-solver-core</artifactId>
+            <version>${javaparser.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>${asciidoctor.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>markup-document-builder</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>${markup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+    </dependencies>
+</project>
