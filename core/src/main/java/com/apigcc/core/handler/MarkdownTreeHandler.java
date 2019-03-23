@@ -1,12 +1,12 @@
-package com.github.apiggs.handler;
+package com.apigcc.core.handler;
 
-import com.github.apiggs.Environment;
-import com.github.apiggs.http.HttpMessage;
-import com.github.apiggs.http.HttpRequest;
-import com.github.apiggs.http.HttpResponse;
-import com.github.apiggs.schema.Cell;
-import com.github.apiggs.schema.Group;
-import com.github.apiggs.schema.Tree;
+import com.apigcc.core.Options;
+import com.apigcc.core.common.Cell;
+import com.apigcc.core.http.HttpMessage;
+import com.apigcc.core.http.HttpRequest;
+import com.apigcc.core.http.HttpResponse;
+import com.apigcc.core.schema.Group;
+import com.apigcc.core.schema.Tree;
 import io.github.swagger2markup.markup.builder.internal.markdown.MarkdownBuilder;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -29,7 +29,7 @@ public class MarkdownTreeHandler implements TreeHandler {
     MarkdownBuilder builder = new MarkdownBuilder();
 
     @Override
-    public void handle(Tree tree, Environment env) {
+    public void handle(Tree tree, Options options) {
         builder.documentTitle(tree.getName());
         if (Objects.nonNull(tree.getVersion())) {
             builder.paragraph("version:" + tree.getVersion());
@@ -38,12 +38,12 @@ public class MarkdownTreeHandler implements TreeHandler {
             builder.paragraph(tree.getDescription(), true);
         }
 
-        for (int i = 0; i < tree.getGroups().size(); i++) {
-            Group group = tree.getGroups().get(i);
+        for (int i = 0; i < tree.getBucket().getGroups().size(); i++) {
+            Group group = tree.getBucket().getGroups().get(i);
             buildGroup(group, "", i + 1);
         }
 
-        Path adoc = env.getOutPath().resolve(env.getId());
+        Path adoc = options.getOutPath().resolve(options.getId());
         builder.writeToFile(adoc, StandardCharsets.UTF_8);
     }
 
@@ -125,7 +125,7 @@ public class MarkdownTreeHandler implements TreeHandler {
         table(message.getRequest().getCells());
     }
 
-    private void table(List<Cell> cells) {
+    private void table(List<Cell<String>> cells) {
         if (CollectionUtils.isNotEmpty(cells)) {
             List<List<String>> responseTable = new ArrayList<>();
             responseTable.add(Arrays.asList("NAME", "TYPE", "DEFAULT", "DESCRIPTION"));
