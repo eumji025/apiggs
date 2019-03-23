@@ -1,2 +1,5 @@
-rootProject.name = 'apiggs'
+rootProject.name = 'apigcc'
+include 'core'
+include 'spring'
+include 'jfinal'
 

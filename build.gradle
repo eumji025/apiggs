@@ -1,102 +1,25 @@
-group 'com.github.apiggs'
-version '1.2-SNAPSHOT'
-
-ext {
-    DESCRIPTION = 'A rest document generator with parse the source code.'
-    SITE_URL = 'https://github.com/apiggs/apiggs'
-    GIT_URL = 'https://github.com/apiggs/apiggs.git'
-
-    LICENSE = 'MIT License'
-
-    DEVELOPER_ID = 'ayz6uem'
-    DEVELOPER_NAME = 'ayz6uem'
-    DEVELOPER_EMAIL = '360188606@qq.com'
-
-    IS_UPLOADING = project.getGradle().startParameter.taskNames.any{it.contains('bintrayUpload')}
-}
-
 buildscript {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
     }
     dependencies {
         classpath 'com.novoda:bintray-release:0.8.1'
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'maven'
+subprojects {
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+    apply plugin: 'java'
 
-[compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+    group 'com.apigcc'
+    version '1.6'
 
-repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
-    mavenCentral()
-}
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-dependencies {
-    compile 'com.github.javaparser:javaparser-symbol-solver-core:3.6.25'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    compile 'org.asciidoctor:asciidoctorj:1.5.6'
-    compile "io.github.swagger2markup:markup-document-builder:1.1.2"
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.0.RELEASE'
-    testCompile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-}
-
-publish {
-    userOrg = name
-    groupId = group
-    artifactId = name
-    publishVersion = version
-    desc = project.DESCRIPTION
-    website = project.SITE_URL
-//    bintrayUser = project.BINTRAYUSER
-//    bintrayKey = project.BINTRAYKEY
-    dryRun = false
-}
-
-gradle.taskGraph.whenReady { taskGraph ->
-    taskGraph.getAllTasks().find {
-        it.path == ":generatePomFileForMavenPublication"
-    }.doLast {
-        file("build/publications/maven/pom-default.xml").delete()
-        println 'Overriding pom-file to make sure we can sync to maven central!'
-        pom {
-            //noinspection GroovyAssignabilityCheck
-            project {
-                name "$project.name"
-                artifactId name
-                packaging 'jar'
-                description DESCRIPTION
-                url SITE_URL
-                version version
-
-                scm {
-                    url GIT_URL
-                    connection GIT_URL
-                    developerConnection GIT_URL
-                }
-
-                licenses {
-                    license {
-                        name LICENSE
-                    }
-                }
-
-                developers {
-                    developer {
-                        id DEVELOPER_ID
-                        name DEVELOPER_NAME
-                        email DEVELOPER_EMAIL
-                    }
-                }
-            }
-        }.writeTo("build/publications/maven/pom-default.xml")
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
     }
 }
