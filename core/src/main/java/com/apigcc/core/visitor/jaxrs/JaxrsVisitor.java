@@ -83,24 +83,25 @@ public class JaxrsVisitor extends NodeVisitor {
     public void visit(MethodDeclaration n, Node arg) {
         if (arg instanceof Group && RequestMappings.accept(n.getAnnotations())) {
             Group group = (Group) arg;
-            if (group.isRest() || RequestMappings.isRequestBody(n)) {
-                //请求方法处理成HttpMessage
-                HttpMessage message = new HttpMessage();
-                message.setId(group.getId() + "." + message.getName());
-                message.setName(n.getNameAsString());
-                message.setParent(group);
+            //jaxrs默认都是restful 且responseBody为true
+            //if (group.isRest() || RequestMappings.isRequestBody(n)) {
+            //请求方法处理成HttpMessage
+            HttpMessage message = new HttpMessage();
+            message.setId(group.getId() + "." + message.getName());
+            message.setName(n.getNameAsString());
+            message.setParent(group);
 
-                visit(n.getType(), message);
-                visit(n.getAnnotations(), message);
-                n.getParameters().forEach(p -> visit(p, message));
+            visit(n.getType(), message);
+            visit(n.getAnnotations(), message);
+            n.getParameters().forEach(p -> visit(p, message));
 
-                //尝试从注释解析名称和描述
-                message.accept(n.getComment());
-                //设置为代码顺序
-                message.setIndex(group.getNodes().size());
+            //尝试从注释解析名称和描述
+            message.accept(n.getComment());
+            //设置为代码顺序
+            message.setIndex(group.getNodes().size());
 
-                group.getNodes().add(message);
-            }
+            group.getNodes().add(message);
+            //}
 
         }
         super.visit(n, arg);
@@ -161,17 +162,17 @@ public class JaxrsVisitor extends NodeVisitor {
         HttpRequestMethod httpRequestMethod = null;
         for (AnnotationExpr annotation : annotations) {
             if (RequestMappings.accept(annotation)) {
-                 requestMappings = RequestMappings.of(annotation);
+                requestMappings = RequestMappings.of(annotation);
             }
 
             //获取请求方法
-            if (RequestMappings.ANNOTATION_METHOD.containsKey(annotation.getNameAsString())){
+            if (RequestMappings.ANNOTATION_METHOD.containsKey(annotation.getNameAsString())) {
                 httpRequestMethod = RequestMappings.ANNOTATION_METHOD.get(annotation.getNameAsString());
             }
 
         }
 
-        if (requestMappings == null){
+        if (requestMappings == null) {
             return;
         }
         Group group = message.getParent();
