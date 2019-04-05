@@ -113,15 +113,10 @@ public class AsciidocTreeHandler implements TreeHandler {
         }
 
         HttpRequest request = message.getRequest();
-        builder.textLine("请求");
+        builder.title(level+1,"请求");
         builder.listing(builder -> {
             for (String uri : request.getUris()) {
-                builder.textLine(request.getMethod()
-                        + " "
-                        + uri
-                        + request.queryString()
-                        + " "
-                        + message.getVersion());
+                builder.textLine(request.getMethod() + " " + uri + request.queryString() + " " + message.getVersion());
             }
             request.getHeaders().forEach((k, v) -> builder.textLine(k + ": " + v));
             if (request.hasBody()) {
@@ -129,12 +124,12 @@ public class AsciidocTreeHandler implements TreeHandler {
                 builder.text(request.bodyString());
             }
         }, "source,HTTP");
-
+        builder.title(level+1,"请求参数列表");
         ntcdd(request.getCells());
 
         HttpResponse response = message.getResponse();
         if (!response.isEmpty()) {
-            builder.textLine("响应");
+            builder.title(level+1,"响应");
             builder.listing(builder -> {
                 builder.textLine(message.getVersion() + " " + response.getStatus());
                 response.getHeaders().forEach((k, v) -> builder.textLine(k + ": " + v));
@@ -143,6 +138,7 @@ public class AsciidocTreeHandler implements TreeHandler {
                     builder.text(response.bodyString());
                 }
             }, "source,HTTP");
+            builder.title(level+1,"响应参数列表");
             ntcdd(response.getCells());
         }
 

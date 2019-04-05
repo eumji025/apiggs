@@ -11,9 +11,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * 优先使用scan
  * scan不存在的情况下才使用ignore（提高效率，防止加载过多不需要的包）
+ *
  * @email eumji025@gmail.com
  * @author:EumJi
  * @date: 2019/3/23
@@ -21,23 +21,20 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DynamicTypeSolver implements TypeSolver {
     private TypeSolver parent;
-
-    private List<String> ignorePackages;
-
-    private List<String> scanPackage;
-
-    Map<String, TypeSolver> jarTypeSolverMap = new ConcurrentHashMap<>();
+    private List<String> ignorePackages = Arrays.asList("org.spring", "java.", "javax");
+    private List<String> scanPackage = Arrays.asList("com.eumji", "com.sf.framework.domain", "com.demo.domain", "org.jruby.ir");
+    Map<String, TypeSolver> typeSolverMap = new ConcurrentHashMap<>();
 
     public DynamicTypeSolver() {
-        ignorePackages = Arrays.asList("org.spring","java.");
+        this(Arrays.asList("org.spring", "java."));
     }
 
     public DynamicTypeSolver(List<String> ignorePackages) {
-        this.ignorePackages = ignorePackages;
+        this.ignorePackages.addAll(ignorePackages);
     }
 
     public void setIgnorePackages(List<String> ignorePackages) {
-        this.ignorePackages = ignorePackages;
+        this.ignorePackages.addAll(ignorePackages);
     }
 
     public void addIgnorePackage(String... packageName) {
@@ -47,11 +44,12 @@ public class DynamicTypeSolver implements TypeSolver {
     }
 
     public void setScanPackage(List<String> scanPackage) {
-        this.scanPackage = scanPackage;
+        this.scanPackage.addAll(scanPackage);
     }
 
-    public void  addScanPackage(String... packageName){
-        for (String name : packageName) {
+    public void addScanPackage(String... packageName) {
+        for (String name :
+                packageName) {
             scanPackage.add(name);
         }
     }
@@ -69,40 +67,45 @@ public class DynamicTypeSolver implements TypeSolver {
     @Override
     public SymbolReference<ResolvedReferenceTypeDeclaration> tryToSolveType(String name) {
         try {
-            if (!name.startsWith("com.appigs.domain")){
-                return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
-            }
             Class<?> aClass = Class.forName(name);
             String classPath = aClass.getProtectionDomain().getCodeSource().getLocation().getPath();
-            TypeSolver jarTypeSolver = jarTypeSolverMap.get(classPath);
-
-            if (jarTypeSolver != null){
-                return jarTypeSolver.tryToSolveType(name);
+            TypeSolver typeSolver = typeSolverMap.get(classPath);
+            if (typeSolver != null) {
+                return typeSolver.tryToSolveType(name);
             }
-            //System.out.println(classPath);
+            //如果是源码编译的target/下依赖的类，则尝试获取源码解析
+            if (classPath.endsWith("target/classes/")) {
+                String newPath = classPath.replace("target/classes/", "src/main/java");
+                File file = new File(newPath);
+                if (file.exists()) {
+                    typeSolverMap.put(classPath, typeSolver = new ModulePaserTypeSolver(file.getAbsolutePath()));
+                } else {
+                    typeSolverMap.put(classPath, typeSolver = new ClassLoaderTypeSolver(this.getClass().getClassLoader()));
+                }
+                return typeSolver.tryToSolveType(name);
 
-            //忽略的包
-//            for (String ignorePackage : ignorePackages) {
-//                if (name.startsWith(ignorePackage)){
-//                    return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
-//                }
-//            }
+            }
+            //处于忽略的包里直接结束
+            for (String ignorePackage : ignorePackages) {
+                if (name.startsWith(ignorePackage)) {
+                    return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
+                }
+            }
 
-//            String newPath = classPath.substring(0,classPath.lastIndexOf("."));
-//            File file = new File(newPath + "-sources.jar");
-//            if (file.exists()){
-//                jarTypeSolverMap.put(classPath,new JarTypeSolver(file.getPath()));
-//            }else {
-//                jarTypeSolverMap.put(classPath,new JarTypeSolver(classPath));
-//            }
-            //简化版处理方式利用classLoader进行加载
-            jarTypeSolverMap.put(classPath,jarTypeSolver =new ClassLoaderTypeSolver(this.getClass().getClassLoader()));
-            //jarTypeSolver = jarTypeSolverMap.get(classPath);
-            return jarTypeSolver.tryToSolveType(name);
-
-        }catch (Exception e){
-            System.out.println("解析失败,name is :" + name);
-            e.printStackTrace();
+            for (String packageName : scanPackage) {
+                if (name.startsWith(packageName)) {//是支持处理的包
+                    String newPath = classPath.substring(0, classPath.lastIndexOf("."));
+                    File file = new File(newPath + "-sources.jar");
+                    if (file.exists()) {//自定义jar包处理方式
+                        typeSolverMap.put(classPath, typeSolver = new JarResourcesTypeSolver(file.getAbsolutePath()));
+                    } else {
+                        typeSolverMap.put(classPath, typeSolver = new ClassLoaderTypeSolver(this.getClass().getClassLoader()));
+                    }
+                    return typeSolver.tryToSolveType(name);
+                }
+            }
+        } catch (Exception e) {
+            //护理失败
         }
         return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
     }

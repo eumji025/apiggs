@@ -5,6 +5,7 @@ import com.apigcc.core.common.Cell;
 import com.apigcc.core.http.HttpMessage;
 import com.apigcc.core.http.HttpRequest;
 import com.apigcc.core.http.HttpResponse;
+import com.apigcc.core.schema.Appendix;
 import com.apigcc.core.schema.Group;
 import com.apigcc.core.schema.Tree;
 import io.github.swagger2markup.markup.builder.internal.markdown.MarkdownBuilder;
@@ -43,6 +44,20 @@ public class MarkdownTreeHandler implements TreeHandler {
             buildGroup(group, "", i + 1);
         }
 
+        if (!tree.getAppendices().
+
+                isEmpty()) {
+            builder.sectionTitleLevel1("附录");
+            int i = 1;
+            for (Appendix appendix :
+                    tree.getAppendices()) {
+                if (!appendix.isEmpty()) {
+                    builder.sectionTitleLevel2(i++ + "." + appendix.getName());
+                    appendix(appendix.getCells());
+                }
+            }
+        }
+
         Path adoc = options.getOutPath().resolve(options.getId());
         builder.writeToFile(adoc, StandardCharsets.UTF_8);
     }
@@ -62,7 +77,7 @@ public class MarkdownTreeHandler implements TreeHandler {
     private void buildHttpMessage(HttpMessage message, String prefix, int num) {
         builder.sectionTitleLevel2(prefix + num + " " + message.getName());
         if (Objects.nonNull(message.getDescription())) {
-            builder.paragraph(message.getDescription(), true);
+            builder.paragraph(documentConvert(message.getDescription()), true);
         }
 
         requestMessageBuild(message);
@@ -136,9 +151,35 @@ public class MarkdownTreeHandler implements TreeHandler {
 
     }
 
-    public static void main(String[] args) {
-        String value = "aaaaaaaaaaaaaaaa" + newLineFlag;
-        System.out.println(value.substring(0, value.length() - newLineFlag.length()));
+    private void appendix(List<Cell<String>> cells) {
+        if (cells.size() > 0) {
+            List<List<String>> responseTable = new ArrayList<>();
+            List<String> titles = cells.get(0).toList();
+            responseTable.add(titles);
+            List<String> titleSplits = new ArrayList<>(titles.size());
+            for (String ignored :
+                    titles) {
+                titleSplits.add("----");
+            }
+            responseTable.add(titleSplits);
+            for (int i = 1; i < cells.size(); i++) {
+                responseTable.add(cells.get(i).toList());
+            }
+            cells.forEach(parameter -> responseTable.add(parameter.toList()));
+            builder.table(responseTable);
+        }
+    }
+
+    /**
+     * 格式转换
+     *
+     * @param message
+     * @return
+     */
+    public static String documentConvert(String message) {
+        String targetMessage = message.replace("<pre>", "```java\n");
+        targetMessage = targetMessage.replace("</pre>", "\n```");
+        return targetMessage;
     }
 
 }
