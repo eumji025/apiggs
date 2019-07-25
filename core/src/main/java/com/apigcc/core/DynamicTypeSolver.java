@@ -5,6 +5,8 @@ import com.github.javaparser.symbolsolver.model.resolution.SymbolReference;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
@@ -20,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @time: 11:33
  */
 public class DynamicTypeSolver implements TypeSolver {
+    private static Logger logger = LoggerFactory.getLogger(DynamicTypeSolver.class);
     private TypeSolver parent;
     private List<String> ignorePackages = Arrays.asList("org.spring", "java.", "javax");
     private List<String> scanPackage = Arrays.asList("com.eumji", "com.sf.framework.domain", "com.demo.domain", "org.jruby.ir");
@@ -38,9 +41,7 @@ public class DynamicTypeSolver implements TypeSolver {
     }
 
     public void addIgnorePackage(String... packageName) {
-        for (String name : packageName) {
-            ignorePackages.add(name);
-        }
+        Collections.addAll(ignorePackages, packageName);
     }
 
     public void setScanPackage(List<String> scanPackage) {
@@ -48,10 +49,7 @@ public class DynamicTypeSolver implements TypeSolver {
     }
 
     public void addScanPackage(String... packageName) {
-        for (String name :
-                packageName) {
-            scanPackage.add(name);
-        }
+        Collections.addAll(scanPackage, packageName);
     }
 
     @Override
@@ -72,6 +70,9 @@ public class DynamicTypeSolver implements TypeSolver {
             TypeSolver typeSolver = typeSolverMap.get(classPath);
             if (typeSolver != null) {
                 return typeSolver.tryToSolveType(name);
+            }
+            if (logger.isDebugEnabled()){
+                logger.debug("类型：{}对应的classpath为：{}",name,classPath);
             }
             //如果是源码编译的target/下依赖的类，则尝试获取源码解析
             if (classPath.endsWith("target/classes/")) {

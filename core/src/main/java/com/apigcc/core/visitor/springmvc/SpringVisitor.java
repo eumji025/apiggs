@@ -1,5 +1,8 @@
 package com.apigcc.core.visitor.springmvc;
 
+import java.util.Collections;
+
+import com.apigcc.core.common.Cell;
 import com.apigcc.core.common.URL;
 import com.apigcc.core.http.HttpHeaders;
 import com.apigcc.core.http.HttpMessage;
@@ -108,6 +111,11 @@ public class SpringVisitor extends NodeVisitor {
     private void visit(Type type, HttpMessage message) {
         Types astResolvedType = TypeResolvers.of(type);
         if (astResolvedType.isResolved()) {
+            //对于string类型的相应结果集，需要进行补充
+            if (astResolvedType.getName().equalsIgnoreCase("string")) {
+                Cell<String> stringCell = new Cell<>(astResolvedType.getName(), "", "字符串", "", "字符串响应结果");
+                message.getResponse().getCells().add(stringCell);
+            }
             message.getResponse().setBody(astResolvedType.getValue());
             message.getResponse().getCells().addAll(astResolvedType.getCells());
         }

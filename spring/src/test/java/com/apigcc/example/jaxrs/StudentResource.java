@@ -1,5 +1,7 @@
 package com.apigcc.example.jaxrs;
 
+import com.appigs.domain.Result;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,8 +28,10 @@ public class StudentResource {
     @GET
     @Path("{id}/json")
     @Produces("application/json")
-    public Student getStudentXml(@PathParam("id") int id) {
-        return new Student();
+    public Result<Student> getStudentXml(@PathParam("id") int id) {
+        Result<Student> studentResult = new Result<>();
+        studentResult.setObj(new Student());
+        return studentResult;
     }
 
 }
