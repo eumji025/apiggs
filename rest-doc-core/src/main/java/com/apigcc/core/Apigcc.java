@@ -136,7 +136,7 @@ public class Apigcc extends Context {
                 log.debug("read jar fail:{}", value);
             }
         });
-        getTypeSolver().add(new DynamicTypeSolver());
+        getTypeSolver().add(new DynamicTypeSolver(options.getScanPages()));
         ParserConfiguration parserConfiguration = new ParserConfiguration();
         parserConfiguration.setSymbolResolver(new JavaSymbolSolver(getTypeSolver()));
         return parserConfiguration;

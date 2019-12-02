@@ -89,7 +89,7 @@ public class MarkdownTreeHandler implements TreeHandler {
 
     private void responseMessageBuild(HttpMessage message) {
         HttpResponse response = message.getResponse();
-        builder.sectionTitleLevel3("RESPONSE INFO");
+        builder.sectionTitleLevel3("响应信息示例");
         if (!response.isEmpty()) {
             builder.listingBlock(((Supplier<String>) () -> {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -108,7 +108,7 @@ public class MarkdownTreeHandler implements TreeHandler {
                 String value = stringBuilder.toString();
                 return value.endsWith(newLineFlag) ? value.substring(0, value.length() - newLineFlag.length()) : value;
             }).get(), "response");
-            builder.sectionTitleLevel3("PARAMETERS");
+            builder.sectionTitleLevel3("响应参数详情");
             table(response.getCells());
         }
     }
@@ -120,7 +120,7 @@ public class MarkdownTreeHandler implements TreeHandler {
      */
     private void requestMessageBuild(HttpMessage message) {
         HttpRequest request = message.getRequest();
-        builder.sectionTitleLevel3("REQUEST INFO");
+        builder.sectionTitleLevel3("请求参数示例");
         builder.listingBlock(((Supplier<String>) () -> {
             StringBuilder stringBuilder = new StringBuilder();
             for (String uri : request.getUris()) {
@@ -136,15 +136,15 @@ public class MarkdownTreeHandler implements TreeHandler {
             String value = stringBuilder.toString();
             return value.endsWith(newLineFlag) ? value.substring(0, value.length() - newLineFlag.length()) : value;
         }).get(), "request");
-        builder.sectionTitleLevel3("PARAMETERS");
+        builder.sectionTitleLevel3("请求参数详情");
         table(message.getRequest().getCells());
     }
 
     private void table(List<Cell<String>> cells) {
         if (CollectionUtils.isNotEmpty(cells)) {
             List<List<String>> responseTable = new ArrayList<>();
-            responseTable.add(Arrays.asList("NAME", "TYPE", "DEFAULT", "DESCRIPTION"));
-            responseTable.add(Arrays.asList("----", "----", "----", "----"));
+            responseTable.add(Arrays.asList("属性名", "类型","校验", "默认值", "描述"));
+            responseTable.add(Arrays.asList("----", "----", "----", "----", "----"));
             cells.forEach(parameter -> responseTable.add(parameter.toList()));
             builder.table(responseTable);
         }
@@ -162,9 +162,6 @@ public class MarkdownTreeHandler implements TreeHandler {
                 titleSplits.add("----");
             }
             responseTable.add(titleSplits);
-            for (int i = 1; i < cells.size(); i++) {
-                responseTable.add(cells.get(i).toList());
-            }
             cells.forEach(parameter -> responseTable.add(parameter.toList()));
             builder.table(responseTable);
         }

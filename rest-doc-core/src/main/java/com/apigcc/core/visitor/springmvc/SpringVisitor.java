@@ -112,7 +112,7 @@ public class SpringVisitor extends NodeVisitor {
         Types astResolvedType = TypeResolvers.of(type);
         if (astResolvedType.isResolved()) {
             //对于string类型的相应结果集，需要进行补充
-            if (astResolvedType.getName().equalsIgnoreCase("string")) {
+            if ("string".equalsIgnoreCase(astResolvedType.getName())) {
                 Cell<String> stringCell = new Cell<>(astResolvedType.getName(), "", "字符串", "", "字符串响应结果");
                 message.getResponse().getCells().add(stringCell);
             }

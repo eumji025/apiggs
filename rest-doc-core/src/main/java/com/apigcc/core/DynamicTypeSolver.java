@@ -5,6 +5,7 @@ import com.github.javaparser.symbolsolver.model.resolution.SymbolReference;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,15 +25,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DynamicTypeSolver implements TypeSolver {
     private static Logger logger = LoggerFactory.getLogger(DynamicTypeSolver.class);
     private TypeSolver parent;
-    private List<String> ignorePackages = Arrays.asList("org.spring", "java.", "javax");
-    private List<String> scanPackage = Arrays.asList("com.eumji", "com.sf.framework.domain", "com.demo.domain", "org.jruby.ir");
+    private List<String> ignorePackages = Lists.newArrayList();
+    private List<String> scanPackage = Lists.newArrayList();
     Map<String, TypeSolver> typeSolverMap = new ConcurrentHashMap<>();
 
     public DynamicTypeSolver() {
-        this(Arrays.asList("org.spring", "java."));
+//        ignorePackages.add("org.spring");
+//        ignorePackages.add("java.");
+//        ignorePackages.add("javax");
+
+        scanPackage.addAll(Arrays.asList("com.eumji", "com.demo.domain", "org.jruby.ir"));
     }
 
-    public DynamicTypeSolver(List<String> ignorePackages) {
+    public DynamicTypeSolver(Collection<String> ignorePackages) {
         this.ignorePackages.addAll(ignorePackages);
     }
 
@@ -87,11 +92,11 @@ public class DynamicTypeSolver implements TypeSolver {
 
             }
             //处于忽略的包里直接结束
-            for (String ignorePackage : ignorePackages) {
-                if (name.startsWith(ignorePackage)) {
-                    return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
-                }
-            }
+//            for (String ignorePackage : ignorePackages) {
+//                if (name.startsWith(ignorePackage)) {
+//                    return SymbolReference.unsolved(ResolvedReferenceTypeDeclaration.class);
+//                }
+//            }
 
             for (String packageName : scanPackage) {
                 if (name.startsWith(packageName)) {//是支持处理的包

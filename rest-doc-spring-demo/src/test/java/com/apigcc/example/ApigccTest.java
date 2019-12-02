@@ -24,6 +24,7 @@ public class ApigccTest {
         Options options = new Options()
                 .source(Paths.get("src", "test", "java"))
                 .ignore("ResponseEntity")
+                .scan("com.apigcc")
 //                .jar(Paths.get("src/test/resources/lib/apigcc-model-1.0-SNAPSHOT.jar"))
                 .id("apigcc")
                 .title("示例接口文档")

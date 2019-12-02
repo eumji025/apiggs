@@ -75,7 +75,9 @@ public class Options {
 
     private String css;
 
-    private Set<String> ignores;
+    private Set<String> ignores = Sets.newHashSet();
+
+    private Set<String> scanPages = Sets.newHashSet();
 
     public Options project(Path value) {
         this.project = value;
@@ -163,7 +165,7 @@ public class Options {
     }
 
     public Options ignore(String... values) {
-        ignores = Sets.newHashSet(values);
+        ignores.addAll(Sets.newHashSet(values));
         return this;
     }
 
@@ -179,4 +181,12 @@ public class Options {
         return project.resolve(out).resolve(production);
     }
 
+    public Options scan(String... scanPackages) {
+        this.scanPages.addAll(Sets.newHashSet(scanPackages));
+        return this;
+    }
+
+//    public Options setScanPages(Set<String> scanPages) {
+//        this.scanPages = scanPages;
+//    }
 }
