@@ -71,5 +71,19 @@
             <version>2.0.1.Final</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
+
+    <modules>
+        <module>apigcc-springmvc</module>
+        <module>apigcc-core</module>
+    </modules>
 </project>
