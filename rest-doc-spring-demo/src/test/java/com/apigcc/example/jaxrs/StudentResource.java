@@ -30,7 +30,7 @@ public class StudentResource {
     @Produces("application/json")
     public Result<Student> getStudentXml(@PathParam("id") int id) {
         Result<Student> studentResult = new Result<>();
-        studentResult.setObj(new Student());
+        studentResult.setData(new Student());
         return studentResult;
     }
 

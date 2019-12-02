@@ -4,7 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.apiggs</groupId>
-    <artifactId>appigs-parent</artifactId>
+    <artifactId>rest-doc-parent</artifactId>
     <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -22,16 +22,14 @@
         <junit.version>4.12</junit.version>
         <spring.version>5.1.0.RELEASE</spring.version>
         <javaparser.version>3.13.4</javaparser.version>
-        <jaxrs.version>2.1</jaxrs.version>
         <fastjson.version>1.2.51</fastjson.version>
-        <validation.version>2.0.1.Final</validation.version>
     </properties>
 
 
     <modules>
-        <module>spring</module>
-        <module>core</module>
-        <module>apiggs-domain</module>
+        <module>rest-doc-spring-demo</module>
+        <module>rest-doc-core</module>
+        <module>rest-doc-domain</module>
     </modules>
 
     <dependencyManagement>
@@ -67,11 +65,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${validation.version}</version>
             </dependency>
 
             <dependency>
@@ -138,10 +131,18 @@
                 <version>1.16.18</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/jakarta.ws.rs/jakarta.ws.rs-api -->
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>${jaxrs.version}</version>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>2.1.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>2.0.2</version>
+                <scope>test</scope>
             </dependency>
 
 

@@ -4,14 +4,14 @@
 
     <parent>
         <groupId>com.github.apiggs</groupId>
-        <artifactId>appigs-parent</artifactId>
+        <artifactId>rest-doc-parent</artifactId>
         <version>1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>apiggs-core</artifactId>
+    <artifactId>rest-doc-core</artifactId>
     <version>${project.version}</version>
-    <name>apiggs-core</name>
+    <name>rest-doc-core</name>
 
     <properties>
         <java.version>1.8</java.version>

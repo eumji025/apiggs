@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>com.github.apiggs</groupId>
-        <artifactId>appigs-parent</artifactId>
+        <artifactId>rest-doc-parent</artifactId>
         <version>1.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>apiggs-spring-demo</artifactId>
+    <artifactId>rest-doc-spring-demo</artifactId>
     <version>${project.version}</version>
     <name>apiggs-spring-demo</name>
 
@@ -73,20 +73,46 @@
 
         <dependency>
             <groupId>com.github.apiggs</groupId>
-            <artifactId>apiggs-core</artifactId>
+            <artifactId>rest-doc-core</artifactId>
             <version>1.2-SNAPSHOT</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/jakarta.ws.rs/jakarta.ws.rs-api -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.github.apiggs</groupId>
+            <artifactId>rest-doc-domain</artifactId>
+            <version>1.2-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.apiggs</groupId>
-            <artifactId>apiggs-domain</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <groupId>com.github.apigcc</groupId>
+            <artifactId>apigcc-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/apigcc-model-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>1.7.26</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
