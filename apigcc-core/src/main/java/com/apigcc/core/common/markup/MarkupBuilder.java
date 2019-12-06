@@ -1,6 +1,7 @@
 package com.apigcc.core.common.markup;
 
 import com.apigcc.core.common.markup.asciidoc.AsciiDocBuilder;
+import com.apigcc.core.common.markup.markdown.MarkdownBuilder;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -8,11 +9,16 @@ import java.util.function.Consumer;
 /**
  * 文档构建器
  * 只实现满足需求的部分即可
+ *
+ *
  */
 public interface MarkupBuilder {
 
-    static MarkupBuilder getInstance(){
+    static MarkupBuilder getAsciiDocInstance(){
         return new AsciiDocBuilder();
+    }
+    static MarkupBuilder getMarkDownInstance(){
+        return new MarkdownBuilder();
     }
 
     /**

@@ -2,6 +2,7 @@ package com.apigcc.core;
 
 import com.apigcc.core.common.helper.FileHelper;
 import com.apigcc.core.render.AsciidocRender;
+import com.apigcc.core.render.MarkDownRender;
 import com.apigcc.core.render.PostmanRender;
 import com.apigcc.core.render.ProjectRender;
 import com.google.common.collect.Lists;
@@ -12,6 +13,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * context作为构建api信息的上下文
+ */
 @Getter
 public class Context {
 
@@ -26,10 +30,14 @@ public class Context {
     @Setter
     public String framework;
 
+    /**
+     * 增加markdown的实现
+     */
     @Setter
     public List<ProjectRender> renders = Lists.newArrayList(
             new AsciidocRender(),
-            new PostmanRender());
+            new PostmanRender(),
+            new MarkDownRender());
 
     @Setter
     private Path buildPath = Paths.get(DEFAULT_BUILD_PATH);
