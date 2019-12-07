@@ -1,13 +1,14 @@
 package com.apigcc.core.parser;
 
+import com.apigcc.core.common.helper.AppendixHelper;
 import com.apigcc.core.common.helper.OptionalHelper;
-import com.apigcc.core.schema.Chapter;
-import com.apigcc.core.schema.Node;
-import com.apigcc.core.schema.Project;
-import com.apigcc.core.schema.Section;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
+import com.apigcc.core.schema.*;
+import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class VisitorParser extends VoidVisitorAdapter<Node> {
 
@@ -50,6 +51,45 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
             chapter.getSections().add(section);
             super.visit(n, section);
         }
+    }
+
+
+    @Override
+    public void visit(JavadocComment n, Node arg) {
+        super.visit(n, arg);
+        Optional<com.github.javaparser.ast.Node> node = n.getCommentedNode();
+        if (!node.isPresent()) {
+            return;
+        }
+        if (node.get() instanceof EnumDeclaration) {
+            Appendix parse = AppendixHelper.parse(n);
+
+            Project project = (Project) arg;
+            project.addAppendix(parse);
+        }
+//        if (arg instanceof Tree) {
+//            Tree tree = (Tree) arg;
+//            Comments javadoc = Comments.of(n);
+//            //解析部分自定义标签
+//            for (Tag tag : javadoc.getTags()) {
+//                if (Objects.equals(tag.getName(), Tags.readme.name())) {
+//                    tree.setReadme(tag.getContent());
+//                }
+//                if (Objects.equals(tag.getName(), Tags.title.name())) {
+//                    tree.setName(tag.getContent());
+//                }
+//                if (Objects.equals(tag.getName(), Tags.description.name())) {
+//                    tree.setDescription(tag.getContent());
+//                }
+//                if (Objects.equals(tag.getName(), Tags.code.name())) {
+//                    Appendix appendix = Appendix.parse(n);
+//                    if(appendix!=null){
+//                        tree.getAppendices().add(appendix);
+//                    }
+//                }
+//            }
+//        }
+
     }
 
 }

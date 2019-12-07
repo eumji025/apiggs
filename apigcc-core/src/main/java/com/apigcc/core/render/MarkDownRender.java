@@ -53,7 +53,7 @@ public class MarkDownRender implements ProjectRender {
                     builder.paragraph(section.getDescription());
 
 
-                    builder.title(4, "请求参数示例");
+                    builder.title(3, "请求参数示例");
 
                     builder.listing(b -> {
                         //请求url信息
@@ -68,11 +68,11 @@ public class MarkDownRender implements ProjectRender {
                             b.text(section.getParameterString());
                         }
                     }, "source,HTTP");
-                    builder.title(4, "请求参数描述");
+                    builder.title(3, "请求参数描述");
                     //参数的列表构建
                     table(builder, section.getRequestRows().values());
 
-                    builder.title(4, "响应参数示例");
+                    builder.title(3, "响应参数示例");
 
                     builder.listing(b -> {
                         //构建header
@@ -87,18 +87,35 @@ public class MarkDownRender implements ProjectRender {
                             b.text("N/A");
                         }
                     }, "source,JSON");
-                    builder.title(4, "响应参数描述");
+                    builder.title(3, "响应参数描述");
                     //结果的列表构建
                     table(builder, section.getResponseRows().values());
 
                 }
             }
+
+            builder.title(2, "附录");
+
+            for (Appendix appendix : project.getAppendixs()) {
+                builder.title(3,appendix.getTitle());
+                builder.paragraph(appendix.getDescription());
+
+                tableAppendix(builder,appendix.getCells());
+            }
+
             //输出markdown信息到文件
             Path markdownFile = projectBuildPath.resolve(name + Markdown.EXTENSION);
             FileHelper.write(markdownFile, builder.getContent());
             log.info("Build Markdown {}", markdownFile);
         });
 
+
+    }
+
+    private void tableAppendix(MarkupBuilder builder, List<Cell<String>> cells) {
+        List<List<String>> responseTable = new ArrayList<>();
+        cells.forEach(c -> responseTable.add(c.toList()));
+        builder.table(responseTable,true,false);
 
     }
 

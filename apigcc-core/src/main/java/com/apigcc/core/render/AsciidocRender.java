@@ -93,6 +93,16 @@ public class AsciidocRender implements ProjectRender {
                 }
             }
 
+
+            builder.title(2, "附录");
+
+            for (Appendix appendix : project.getAppendixs()) {
+                builder.title(3,appendix.getTitle());
+                builder.paragraph(appendix.getDescription());
+
+                tableAppendix(builder,appendix.getCells());
+            }
+
             Path adocFile = projectBuildPath.resolve(name + AsciiDoc.EXTENSION);
             FileHelper.write(adocFile, builder.getContent());
             log.info("Build AsciiDoc {}", adocFile);
@@ -120,6 +130,24 @@ public class AsciidocRender implements ProjectRender {
         log.info("Render AsciiDoc to html {}", projectBuildPath);
     }
 
+
+    /**
+     * 构建附录表格
+     * @param builder
+     * @param cells
+     */
+    private void tableAppendix(MarkupBuilder builder, List<Cell<String>> cells) {
+        List<List<String>> responseTable = new ArrayList<>();
+        cells.forEach(c -> responseTable.add(c.toList()));
+        builder.table(responseTable,true,false);
+
+    }
+
+    /**
+     * 构建参数表格
+     * @param builder
+     * @param rows
+     */
     private void table(MarkupBuilder builder, Collection<Row> rows) {
         if (rows.size() > 0) {
             List<List<String>> responseTable = new ArrayList<>();

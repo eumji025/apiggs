@@ -14,6 +14,8 @@ public class Project extends Node {
 
     String version;
 
+    List<Appendix> appendixs = new LinkedList<>();
+
     Map<String, Book> books = new TreeMap<>();
 
     public void addChapter(Chapter chapter) {
@@ -24,5 +26,9 @@ public class Project extends Node {
             books.put(chapter.getBookName(), new Book(chapter.getBookName()));
         }
         books.get(chapter.getBookName()).getChapters().add(chapter);
+    }
+
+    public void addAppendix(Appendix parse) {
+        appendixs.add(parse);
     }
 }

@@ -39,9 +39,7 @@ public class RequestMappingHelper {
         if(parentOptional.isPresent()){
             Node parentNode = parentOptional.get();
             if(parentNode instanceof ClassOrInterfaceDeclaration){
-                if (((ClassOrInterfaceDeclaration) parentNode).isAnnotationPresent(SpringParser.ANNOTATION_REST_CONTROLLER)) {
-                    return true;
-                }
+                return ((ClassOrInterfaceDeclaration) parentNode).isAnnotationPresent(SpringParser.ANNOTATION_REST_CONTROLLER);
             }
         }
         return false;

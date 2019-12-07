@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * 每个项目里下的一个分类，可以通过tag {@code book}进行表示
+ */
 @Setter
 @Getter
 public class Book extends Node {
