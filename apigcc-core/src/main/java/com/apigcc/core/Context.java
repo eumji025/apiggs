@@ -11,7 +11,7 @@ import lombok.Setter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 
 /**
  * context作为构建api信息的上下文
@@ -66,6 +66,8 @@ public class Context {
     @Setter
     private String version;
 
+    private Set<String> scanPackages = new TreeSet<>();
+
     /**
      * 渲染html时的css
      */
@@ -87,4 +89,16 @@ public class Context {
         jars.add(path);
     }
 
+    public void addScanPackage(String pack){
+        scanPackages.add(pack);
+    }
+
+    public void addScanPackages(List<String> packs){
+        scanPackages.addAll(packs);
+    }
+
+    public void addScanPackages(String... packs){
+        Collections.addAll(scanPackages, packs);
+    }
 }
+

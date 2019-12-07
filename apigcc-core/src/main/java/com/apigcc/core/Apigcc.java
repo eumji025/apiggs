@@ -4,6 +4,7 @@ import com.apigcc.core.common.helper.StringHelper;
 import com.apigcc.core.parser.ParserStrategy;
 import com.apigcc.core.parser.VisitorParser;
 import com.apigcc.core.render.ProjectRender;
+import com.apigcc.core.resolver.DynamicTypeSolver;
 import com.apigcc.core.resolver.TypeResolvers;
 import com.apigcc.core.schema.Project;
 import com.github.javaparser.ParseResult;
@@ -77,6 +78,7 @@ public class Apigcc {
             }
         }
         typeSolver.add(new ReflectionTypeSolver());
+        typeSolver.add(new DynamicTypeSolver(context.getScanPackages()));
 
         parserConfiguration = new ParserConfiguration();
         parserConfiguration.setSymbolResolver(new JavaSymbolSolver(typeSolver));
